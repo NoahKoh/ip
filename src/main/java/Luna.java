@@ -15,7 +15,8 @@ public class Luna {
     }
 
     public void processInput() {
-        while (true) {
+        //while (true) {
+        while (sc.hasNextLine()) {
             String input = sc.nextLine();
             String[] inputParts = input.split(" ", 2);
             String command = inputParts[0];
