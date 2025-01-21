@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Luna {
 
     Scanner sc = new Scanner(System.in);
-    ArrayList<String> taskData = new ArrayList<>();
+    ArrayList<Task> taskData = new ArrayList<>();
 
     public void greet() {
         System.out.println("Hello! I'm " + this.getClass().getSimpleName() + "\nWhat can I do for you?");
@@ -31,13 +31,22 @@ public class Luna {
     public void processInput() {
         while (true) {
             String input = sc.nextLine();
-            if (input.equals("bye")) {
+            String[] inputParts = input.split(" ", 2);
+            String command = inputParts[0];
+            if (command.equals("bye")) {
                 exit();
                 break;
-            } else if (input.equals("list")){
+            } else if (command.equals("list")){
+                System.out.println("Here are the tasks in your list:");
                 listTask();
+            } else if (command.equals("mark")) {
+                int index = Integer.parseInt(inputParts[1]) - 1;
+                taskData.get(index).markDone();
+            } else if (command.equalsIgnoreCase("unmark")) {
+                int index = Integer.parseInt(inputParts[1]) - 1;
+                taskData.get(index).markUndone();
             } else { // Action can only be about adding input to the list
-                taskData.add(input);
+                taskData.add(new Task(input));
                 System.out.println("added: " + input);
             }
         }
@@ -45,7 +54,7 @@ public class Luna {
     
     public void listTask() {
         for (int i = 0; i < taskData.size(); i++) {
-            System.out.println((i + 1) + ". " + taskData.get(i));
+            System.out.println((i + 1) + "." + taskData.get(i).toString());
         }
     }
 
