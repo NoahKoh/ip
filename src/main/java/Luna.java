@@ -1,8 +1,10 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Luna {
 
     Scanner sc = new Scanner(System.in);
+    ArrayList<String> taskData = new ArrayList<>();
 
     public void greet() {
         System.out.println("Hello! I'm " + this.getClass().getSimpleName() + "\nWhat can I do for you?");
@@ -12,6 +14,7 @@ public class Luna {
         System.out.println("Bye. Hope to see you again soon!");
     }
 
+    /*
     public void echo() {
         while (true) {
             String command = sc.nextLine();
@@ -21,6 +24,28 @@ public class Luna {
             } else {
                 System.out.println(command); // Just print the command itself
             }
+        }
+    }
+    */
+
+    public void processInput() {
+        while (true) {
+            String input = sc.nextLine();
+            if (input.equals("bye")) {
+                exit();
+                break;
+            } else if (input.equals("list")){
+                listTask();
+            } else { // Action can only be about adding input to the list
+                taskData.add(input);
+                System.out.println("added: " + input);
+            }
+        }
+    }
+    
+    public void listTask() {
+        for (int i = 0; i < taskData.size(); i++) {
+            System.out.println((i + 1) + ". " + taskData.get(i));
         }
     }
 
@@ -35,6 +60,6 @@ public class Luna {
          */
         Luna chatBot = new Luna();
         chatBot.greet();
-        chatBot.echo();
+        chatBot.processInput();
     }
 }
