@@ -23,6 +23,11 @@ public class Task {
         System.out.println("  [ ] " + this.description);
     }
 
+    public void printAddTaskMessage() {
+        System.out.println("Got it. I've added this task:");
+        System.out.println(this.toString());
+    }
+
     @Override
     public String toString() {
         return "[" + this.getStatusIcon() + "] " + this.description;

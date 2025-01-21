@@ -14,20 +14,6 @@ public class Luna {
         System.out.println("Bye. Hope to see you again soon!");
     }
 
-    /*
-    public void echo() {
-        while (true) {
-            String command = sc.nextLine();
-            if (command.equals("bye")) {
-                exit();
-                break;
-            } else {
-                System.out.println(command); // Just print the command itself
-            }
-        }
-    }
-    */
-
     public void processInput() {
         while (true) {
             String input = sc.nextLine();
@@ -45,9 +31,32 @@ public class Luna {
             } else if (command.equalsIgnoreCase("unmark")) {
                 int index = Integer.parseInt(inputParts[1]) - 1;
                 taskData.get(index).markUndone();
-            } else { // Action can only be about adding input to the list
-                taskData.add(new Task(input));
-                System.out.println("added: " + input);
+            } else { // Action can be any of the 3 types of Task
+                if (command.equals("todo")) {
+                    String description = inputParts[1];
+                    Todo task = new Todo(description);
+                    taskData.add(task);
+                    task.printAddTaskMessage();
+                } else if (command.equals("deadline")) {
+                    String[] remainingInput = inputParts[1].split("/by", 2);
+                    String description = remainingInput[0].trim();
+                    String by = remainingInput[1].trim();
+                    Deadline task = new Deadline(description, by);
+                    taskData.add(task);
+                    task.printAddTaskMessage();
+                } else if (command.equals("event")) {
+                    String[] remainingInput1 = inputParts[1].split("/from", 2);
+                    String description = remainingInput1[0].trim();
+                    String[] remainingInput2 = remainingInput1[1].split("/to", 2);
+                    String from = remainingInput2[0].trim();
+                    String to = remainingInput2[1].trim();
+                    Event task = new Event(description, from, to);
+                    taskData.add(task);
+                    task.printAddTaskMessage();
+                } else {
+                    taskData.add(new Task(input));
+                }
+                System.out.println("Now you have " + taskData.size() + " tasks in the list.");
             }
         }
     }
