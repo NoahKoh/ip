@@ -107,6 +107,7 @@ public class Luna {
                         taskData.add(task);
                         task.printAddTaskMessage();
                     } else {
+                        System.out.println(command);
                         throw new LunaException("Invalid command");
                     }
                     System.out.println("Now you have " + taskData.size() + " tasks in the list.");
