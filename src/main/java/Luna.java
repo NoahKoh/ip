@@ -6,6 +6,19 @@ public class Luna {
     Scanner sc = new Scanner(System.in);
     ArrayList<Task> taskData = new ArrayList<>();
 
+    protected enum Command {
+        BYE,
+        LIST,
+        MARK,
+        UNMARK,
+        DELETE,
+        TODO,
+        DEADLINE,
+        EVENT
+    }
+
+    Command command;
+
     public void greet() {
         System.out.println("Hello! I'm " + this.getClass().getSimpleName() + "\nWhat can I do for you?");
     }
@@ -20,26 +33,30 @@ public class Luna {
             try {
                 String input = sc.nextLine();
                 String[] inputParts = input.split(" ", 2);
-                String command = inputParts[0];
-                if (command.equals("bye")) {
+                try {
+                    command = Command.valueOf(inputParts[0].toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    throw new LunaException("Invalid Command1");
+                }
+                if (command == Command.BYE) {
                     exit();
                     break;
-                } else if (command.equals("list")) {
+                } else if (command == Command.LIST) {
                     System.out.println("Here are the tasks in your list:");
                     listTask();
-                } else if (command.equals("mark")) {
+                } else if (command == Command.MARK) {
                     if (inputParts.length < 2) {
                         throw new LunaException("The Task number to mark cannot be empty.");
                     }
                     int index = Integer.parseInt(inputParts[1]) - 1;
                     taskData.get(index).markDone();
-                } else if (command.equals("unmark")) {
+                } else if (command == Command.UNMARK) {
                     if (inputParts.length < 2) {
                         throw new LunaException("The Task number to unmark cannot be empty.");
                     }
                     int index = Integer.parseInt(inputParts[1]) - 1;
                     taskData.get(index).markUndone();
-                } else if (command.equals("delete")) {
+                } else if (command == Command.DELETE) {
                     if (inputParts.length < 2) {
                         throw new LunaException("The Task number to delete cannot be empty.");
                     }
@@ -50,15 +67,15 @@ public class Luna {
                     System.out.println("  " + task.toString());
                     System.out.println("Now you have " + taskData.size() + " tasks in the list.");
                 } else { // Action can be any of the 3 types of Task
-                    if (command.equals("todo")) {
-                        if (inputParts.length < 2) {
+                    if (command == Command.TODO) {
+                        if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
                             throw new LunaException("The description of a todo cannot be empty.");
                         }
                         String description = inputParts[1];
                         Todo task = new Todo(description);
                         taskData.add(task);
                         task.printAddTaskMessage();
-                    } else if (command.equals("deadline")) {
+                    } else if (command == Command.DEADLINE) {
                         if (inputParts.length < 2) {
                             throw new LunaException("The description of a deadline cannot be empty.");
                         }
@@ -71,7 +88,7 @@ public class Luna {
                         Deadline task = new Deadline(description, by);
                         taskData.add(task);
                         task.printAddTaskMessage();
-                    } else if (command.equals("event")) {
+                    } else if (command == Command.EVENT) {
                         if (inputParts.length < 2) {
                             throw new LunaException("The description of an event cannot be empty.");
                         }
@@ -90,6 +107,7 @@ public class Luna {
                         taskData.add(task);
                         task.printAddTaskMessage();
                     } else {
+                        System.out.println(command);
                         throw new LunaException("Invalid command");
                     }
                     System.out.println("Now you have " + taskData.size() + " tasks in the list.");
