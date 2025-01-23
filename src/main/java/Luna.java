@@ -39,6 +39,16 @@ public class Luna {
                     }
                     int index = Integer.parseInt(inputParts[1]) - 1;
                     taskData.get(index).markUndone();
+                } else if (command.equals("delete")) {
+                    if (inputParts.length < 2) {
+                        throw new LunaException("The Task number to delete cannot be empty.");
+                    }
+                    int index = Integer.parseInt(inputParts[1]) - 1;
+                    Task task = taskData.get(index);
+                    taskData.remove(index);
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println("  " + task.toString());
+                    System.out.println("Now you have " + taskData.size() + " tasks in the list.");
                 } else { // Action can be any of the 3 types of Task
                     if (command.equals("todo")) {
                         if (inputParts.length < 2) {
