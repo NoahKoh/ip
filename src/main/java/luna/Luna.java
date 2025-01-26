@@ -1,7 +1,6 @@
-import java.awt.print.PrinterAbortException;
+package luna;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.time.format.DateTimeParseException;
 
 public class Luna {
@@ -50,23 +49,23 @@ public class Luna {
                     taskList.listTask();
                 } else if (command == Parser.Command.MARK) {
                     if (inputParts.length < 2) {
-                        throw new LunaException("The Task number to mark cannot be empty.");
+                        throw new LunaException("The luna.Task number to mark cannot be empty.");
                     }
                     int index = Integer.parseInt(inputParts[1]) - 1;
                     taskList.markDone(index);
                 } else if (command == Parser.Command.UNMARK) {
                     if (inputParts.length < 2) {
-                        throw new LunaException("The Task number to unmark cannot be empty.");
+                        throw new LunaException("The luna.Task number to unmark cannot be empty.");
                     }
                     int index = Integer.parseInt(inputParts[1]) - 1;
                     taskList.markUndone(index);
                 } else if (command == Parser.Command.DELETE) {
                     if (inputParts.length < 2) {
-                        throw new LunaException("The Task number to delete cannot be empty.");
+                        throw new LunaException("The luna.Task number to delete cannot be empty.");
                     }
                     int index = Integer.parseInt(inputParts[1]) - 1;
                     taskList.deleteTask(index);
-                } else { // Action can be any of the 3 types of Task
+                } else { // Action can be any of the 3 types of luna.Task
                     if (command == Parser.Command.TODO) {
                         if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
                             throw new LunaException("The description of a todo cannot be empty.");
@@ -80,7 +79,7 @@ public class Luna {
                         }
                         String[] remainingInput = inputParts[1].split("/by", 2);
                         if (remainingInput.length < 2) {
-                            throw new LunaException("Deadline must include a '/by'");
+                            throw new LunaException("luna.Deadline must include a '/by'");
                         }
                         String description = remainingInput[0].trim();
                         String by = remainingInput[1].trim();
@@ -96,12 +95,12 @@ public class Luna {
                         }
                         String[] remainingInput1 = inputParts[1].split("/from", 2);
                         if (remainingInput1.length < 2) {
-                            throw new LunaException("Event must include a '/from'");
+                            throw new LunaException("luna.Event must include a '/from'");
                         }
                         String description = remainingInput1[0].trim();
                         String[] remainingInput2 = remainingInput1[1].split("/to", 2);
                         if (remainingInput2.length < 2) {
-                            throw new LunaException("Event must include a '/to'");
+                            throw new LunaException("luna.Event must include a '/to'");
                         }
                         String from = remainingInput2[0].trim();
                         String to = remainingInput2[1].trim();
@@ -119,9 +118,9 @@ public class Luna {
             } catch (LunaException e) {
                 System.err.println(e.getMessage());
             } catch (NumberFormatException e) {
-                System.err.println("Need a valid Task number");
+                System.err.println("Need a valid luna.Task number");
             } catch (IndexOutOfBoundsException e) {
-                System.err.println("Task number not in list");
+                System.err.println("luna.Task number not in list");
             }
 
             storage.save(taskList.getTaskList());

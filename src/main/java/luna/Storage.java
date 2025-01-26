@@ -1,3 +1,5 @@
+package luna;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -42,7 +44,7 @@ public class Storage {
             taskList = new ArrayList<>(); // No file to load, start fresh
         } else {
             try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file))) {
-                // Suppressing unchecked cast warning because taskList is always ArrayList<Task> even when saving
+                // Suppressing unchecked cast warning because taskList is always ArrayList<luna.Task> even when saving
                 taskList = (ArrayList<Task>) inputStream.readObject();
             } catch (IOException e) {
                 System.err.println("File corrupted");
