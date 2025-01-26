@@ -1,10 +1,11 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Luna {
 
-    Scanner sc = new Scanner(System.in);
-    ArrayList<Task> taskData = new ArrayList<>();
+    protected Scanner sc = new Scanner(System.in);
+    protected ArrayList<Task> taskData = new ArrayList<>();
 
     protected enum Command {
         BYE,
@@ -17,7 +18,13 @@ public class Luna {
         EVENT
     }
 
-    Command command;
+    protected Command command;
+
+    protected String filePath = "./data/luna.txt";
+
+    public Luna() {
+        loadTasks();
+    }
 
     public void greet() {
         System.out.println("Hello! I'm " + this.getClass().getSimpleName() + "\nWhat can I do for you?");
@@ -118,12 +125,59 @@ public class Luna {
             } catch (IndexOutOfBoundsException e) {
                 System.err.println("Task number not in list");
             }
+
+            saveTasks();
         }
     }
     
     public void listTask() {
         for (int i = 0; i < taskData.size(); i++) {
             System.out.println((i + 1) + "." + taskData.get(i).toString());
+        }
+    }
+
+    public void saveTasks() {
+        File file = new File(filePath);
+        File parentDirectory = file.getParentFile();
+
+        // If ./data/ directory doesn't exist
+        if (!parentDirectory.exists()) {
+            parentDirectory.mkdirs();
+        }
+
+        // If luna.txt doesn't exist
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                System.err.println("Error creating file");
+            }
+        }
+
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file))){
+            outputStream.writeObject(taskData);
+        } catch (IOException e) {
+            System.err.println("Error saving file");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void loadTasks() {
+        File file = new File(filePath);
+
+        if (!file.exists()) {
+            taskData = new ArrayList<>(); // No file to load, start fresh
+        } else {
+            try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file))) {
+                // Suppressing unchecked cast warning because taskData is always ArrayList<Task> even when saving
+                taskData = (ArrayList<Task>) inputStream.readObject();
+            } catch (IOException e) {
+                System.err.println("File corrupted");
+                taskData = new ArrayList<>(); // Can't read data, start fresh
+            } catch (ClassNotFoundException e) {
+                System.err.println("Class not found");
+                taskData = new ArrayList<>(); // Can't read data, start fresh
+            }
         }
     }
 
