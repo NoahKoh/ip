@@ -15,14 +15,10 @@ public class Task implements Serializable{
 
     public void markDone() {
         this.isDone = true;
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  [X] " + this.description);
     }
 
     public void markUndone() {
         this.isDone = false;
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("  [ ] " + this.description);
     }
 
     public void printAddTaskMessage() {
