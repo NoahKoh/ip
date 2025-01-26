@@ -1,3 +1,4 @@
+import java.awt.print.PrinterAbortException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -5,85 +6,75 @@ import java.time.format.DateTimeParseException;
 
 public class Luna {
 
-    protected Scanner sc = new Scanner(System.in);
-    protected ArrayList<Task> taskData = new ArrayList<>();
-
-    protected enum Command {
-        BYE,
-        LIST,
-        MARK,
-        UNMARK,
-        DELETE,
-        TODO,
-        DEADLINE,
-        EVENT
-    }
-
-    protected Command command;
-
-    protected String filePath = "./data/luna.txt";
+    private String filePath = "./data/luna.txt";
+    private Parser.Command command;
+    private Ui ui;
+    private Parser parser;
+    private TaskList taskList;
+    private Storage storage;
 
     public Luna() {
-        loadTasks();
+        ui = new Ui();
+        parser = new Parser();
+        storage = new Storage(filePath);
+        try {
+            taskList = new TaskList(storage.load());
+        } catch (IOException e) {
+            System.err.println("Error, can't load");
+            taskList = new TaskList();
+        }
+        //loadTasks();
     }
 
-    public void greet() {
-        System.out.println("Hello! I'm " + this.getClass().getSimpleName() + "\nWhat can I do for you?");
-    }
-
-    public void exit() {
-        System.out.println("Bye. Hope to see you again soon!");
+    public void run() {
+        ui.greet(this.getClass().getSimpleName());
+        processInput();
     }
 
     public void processInput() {
-        //while (true) {
-        while (sc.hasNextLine()) {
+        while (true) {
+        //while (sc.hasNextLine()) {
             try {
-                String input = sc.nextLine();
+                String input = ui.getInput();
                 String[] inputParts = input.split(" ", 2);
                 try {
-                    command = Command.valueOf(inputParts[0].toUpperCase());
+                    command = parser.parseCommand(input);
                 } catch (IllegalArgumentException e) {
                     throw new LunaException("Invalid Command");
                 }
-                if (command == Command.BYE) {
-                    exit();
+                if (command == Parser.Command.BYE) {
+                    ui.exit();
                     break;
-                } else if (command == Command.LIST) {
-                    System.out.println("Here are the tasks in your list:");
-                    listTask();
-                } else if (command == Command.MARK) {
+                } else if (command == Parser.Command.LIST) {
+                    ui.printMessage("Here are the tasks in your list:");
+                    taskList.listTask();
+                } else if (command == Parser.Command.MARK) {
                     if (inputParts.length < 2) {
                         throw new LunaException("The Task number to mark cannot be empty.");
                     }
                     int index = Integer.parseInt(inputParts[1]) - 1;
-                    taskData.get(index).markDone();
-                } else if (command == Command.UNMARK) {
+                    taskList.markDone(index);
+                } else if (command == Parser.Command.UNMARK) {
                     if (inputParts.length < 2) {
                         throw new LunaException("The Task number to unmark cannot be empty.");
                     }
                     int index = Integer.parseInt(inputParts[1]) - 1;
-                    taskData.get(index).markUndone();
-                } else if (command == Command.DELETE) {
+                    taskList.markUndone(index);
+                } else if (command == Parser.Command.DELETE) {
                     if (inputParts.length < 2) {
                         throw new LunaException("The Task number to delete cannot be empty.");
                     }
                     int index = Integer.parseInt(inputParts[1]) - 1;
-                    Task task = taskData.get(index);
-                    taskData.remove(index);
-                    System.out.println("Noted. I've removed this task:");
-                    System.out.println("  " + task.toString());
-                    System.out.println("Now you have " + taskData.size() + " tasks in the list.");
+                    taskList.deleteTask(index);
                 } else { // Action can be any of the 3 types of Task
-                    if (command == Command.TODO) {
+                    if (command == Parser.Command.TODO) {
                         if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
                             throw new LunaException("The description of a todo cannot be empty.");
                         }
                         String description = inputParts[1];
                         Todo task = new Todo(description);
-                        taskData.add(task);
-                        task.printAddTaskMessage();
-                    } else if (command == Command.DEADLINE) {
+                        taskList.addTask(task);
+                    } else if (command == Parser.Command.DEADLINE) {
                         if (inputParts.length < 2) {
                             throw new LunaException("The description of a deadline cannot be empty.");
                         }
@@ -95,12 +86,11 @@ public class Luna {
                         String by = remainingInput[1].trim();
                         try {
                             Deadline task = new Deadline(description, by);
-                            taskData.add(task);
-                            task.printAddTaskMessage();
+                            taskList.addTask(task);
                         } catch (DateTimeParseException e) {
                             System.err.println("Invalid date format. Use yyyy-MM-dd.");
                         }
-                    } else if (command == Command.EVENT) {
+                    } else if (command == Parser.Command.EVENT) {
                         if (inputParts.length < 2) {
                             throw new LunaException("The description of an event cannot be empty.");
                         }
@@ -117,15 +107,14 @@ public class Luna {
                         String to = remainingInput2[1].trim();
                         try {
                             Event task = new Event(description, from, to);
-                            taskData.add(task);
-                            task.printAddTaskMessage();
+                            taskList.addTask(task);
                         } catch (DateTimeParseException e) {
                             System.err.println("Invalid date format. Use yyyy-MM-dd.");
                         }
                     } else {
                         throw new LunaException("Invalid command");
                     }
-                    System.out.println("Now you have " + taskData.size() + " tasks in the list.");
+                    ui.printMessage("Now you have " + taskList.getTaskList().size() + " tasks in the list.");
                 }
             } catch (LunaException e) {
                 System.err.println(e.getMessage());
@@ -135,58 +124,7 @@ public class Luna {
                 System.err.println("Task number not in list");
             }
 
-            saveTasks();
-        }
-    }
-    
-    public void listTask() {
-        for (int i = 0; i < taskData.size(); i++) {
-            System.out.println((i + 1) + "." + taskData.get(i).toString());
-        }
-    }
-
-    public void saveTasks() {
-        File file = new File(filePath);
-        File parentDirectory = file.getParentFile();
-
-        // If ./data/ directory doesn't exist
-        if (!parentDirectory.exists()) {
-            parentDirectory.mkdirs();
-        }
-
-        // If luna.txt doesn't exist
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                System.err.println("Error creating file");
-            }
-        }
-
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file))){
-            outputStream.writeObject(taskData);
-        } catch (IOException e) {
-            System.err.println("Error saving file");
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public void loadTasks() {
-        File file = new File(filePath);
-
-        if (!file.exists()) {
-            taskData = new ArrayList<>(); // No file to load, start fresh
-        } else {
-            try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file))) {
-                // Suppressing unchecked cast warning because taskData is always ArrayList<Task> even when saving
-                taskData = (ArrayList<Task>) inputStream.readObject();
-            } catch (IOException e) {
-                System.err.println("File corrupted");
-                taskData = new ArrayList<>(); // Can't read data, start fresh
-            } catch (ClassNotFoundException e) {
-                System.err.println("Class not found");
-                taskData = new ArrayList<>(); // Can't read data, start fresh
-            }
+            storage.save(taskList.getTaskList());
         }
     }
 
@@ -202,7 +140,6 @@ public class Luna {
         System.out.println("Hello from\n" + logo);
          */
         Luna chatBot = new Luna();
-        chatBot.greet();
-        chatBot.processInput();
+        chatBot.run();
     }
 }
