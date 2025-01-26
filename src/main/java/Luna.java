@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.format.DateTimeParseException;
 
 public class Luna {
 
@@ -92,9 +93,13 @@ public class Luna {
                         }
                         String description = remainingInput[0].trim();
                         String by = remainingInput[1].trim();
-                        Deadline task = new Deadline(description, by);
-                        taskData.add(task);
-                        task.printAddTaskMessage();
+                        try {
+                            Deadline task = new Deadline(description, by);
+                            taskData.add(task);
+                            task.printAddTaskMessage();
+                        } catch (DateTimeParseException e) {
+                            System.err.println("Invalid date format. Use yyyy-MM-dd.");
+                        }
                     } else if (command == Command.EVENT) {
                         if (inputParts.length < 2) {
                             throw new LunaException("The description of an event cannot be empty.");
@@ -110,9 +115,13 @@ public class Luna {
                         }
                         String from = remainingInput2[0].trim();
                         String to = remainingInput2[1].trim();
-                        Event task = new Event(description, from, to);
-                        taskData.add(task);
-                        task.printAddTaskMessage();
+                        try {
+                            Event task = new Event(description, from, to);
+                            taskData.add(task);
+                            task.printAddTaskMessage();
+                        } catch (DateTimeParseException e) {
+                            System.err.println("Invalid date format. Use yyyy-MM-dd.");
+                        }
                     } else {
                         throw new LunaException("Invalid command");
                     }
@@ -180,6 +189,8 @@ public class Luna {
             }
         }
     }
+
+
 
     public static void main(String[] args) {
         /*
