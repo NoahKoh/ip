@@ -3,6 +3,10 @@ package luna;
 import java.io.*;
 import java.time.format.DateTimeParseException;
 
+/**
+ * This is the main class for the Luna chatbot application.
+ * This class handles the initialization and execution of the chatbot.
+ */
 public class Luna {
 
     private String filePath = "./data/luna.txt";
@@ -12,6 +16,9 @@ public class Luna {
     private TaskList taskList;
     private Storage storage;
 
+    /**
+     * Constructor for Luna, initializes the necessary components.
+     */
     public Luna() {
         ui = new Ui();
         parser = new Parser();
@@ -25,11 +32,18 @@ public class Luna {
         //loadTasks();
     }
 
+    /**
+     * Starts the Luna chatbot and begins processing user input.
+     */
     public void run() {
         ui.greet(this.getClass().getSimpleName());
         processInput();
     }
 
+    /**
+     * Processes user input and executes the corresponding commands.
+     * Continuously reads input until the "BYE" command is received.
+     */
     public void processInput() {
         while (true) {
         //while (sc.hasNextLine()) {
@@ -128,7 +142,11 @@ public class Luna {
     }
 
 
-
+    /**
+     * The main method to start the Luna chatbot application.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         /*
         String logo = " ____        _        \n"
