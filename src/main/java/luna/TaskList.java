@@ -90,4 +90,13 @@ public class TaskList implements Serializable {
         task.printAddTaskMessage();
     }
 
+    public void findTask(String description) {
+        for (int i = 0; i < this.taskData.size(); i++) {
+            Task task = this.taskData.get(i);
+            if (task.description.contains(description)) {
+                System.out.println((i + 1) + ". " + task.toString());
+            }
+        }
+    }
+
 }

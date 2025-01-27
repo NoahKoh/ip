@@ -79,6 +79,13 @@ public class Luna {
                     }
                     int index = Integer.parseInt(inputParts[1]) - 1;
                     taskList.deleteTask(index);
+                } else if (command == Parser.Command.FIND) {
+                    if (inputParts.length < 2) {
+                        throw new LunaException("The description to find cannot be empty.");
+                    }
+                    ui.printMessage("Here are the matching tasks in your list:");
+                    String description = inputParts[1];
+                    taskList.findTask(description);
                 } else { // Action can be any of the 3 types of luna.Task
                     if (command == Parser.Command.TODO) {
                         if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
