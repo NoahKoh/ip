@@ -3,13 +3,27 @@ package luna;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * This class handles the storage of tasks to and from a file.
+ * It provides methods to save and load tasks to and from the file.
+ */
 public class Storage {
     private String filePath;
 
+    /**
+     * Constructs a new Storage instance with the specified file path.
+     *
+     * @param filePath The file path where tasks will be saved and loaded from.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves the list of tasks to the file.
+     *
+     * @param taskList The list of tasks to be saved.
+     */
     public void save(ArrayList<Task> taskList) {
         File file = new File(filePath);
         File parentDirectory = file.getParentFile();
@@ -35,6 +49,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads the list of tasks from the file.
+     *
+     * @return The list of tasks loaded from the file.
+     * @throws IOException If an I/O error occurs while loading the file.
+     */
     @SuppressWarnings("unchecked")
     public ArrayList<Task> load() throws IOException {
         ArrayList<Task> taskList;
@@ -44,7 +64,7 @@ public class Storage {
             taskList = new ArrayList<>(); // No file to load, start fresh
         } else {
             try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file))) {
-                // Suppressing unchecked cast warning because taskList is always ArrayList<luna.Task> even when saving
+                // Suppressing unchecked cast warning because taskList is always ArrayList<Task> even when saving
                 taskList = (ArrayList<Task>) inputStream.readObject();
             } catch (IOException e) {
                 System.err.println("File corrupted");
