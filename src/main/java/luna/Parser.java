@@ -10,7 +10,8 @@ public class Parser {
         DELETE,
         TODO,
         DEADLINE,
-        EVENT
+        EVENT,
+        FIND
     }
 
     public Command parseCommand(String input) throws IllegalArgumentException {
