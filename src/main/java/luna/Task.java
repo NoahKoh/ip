@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * This class represents a task with a description and completion status.
  */
-public class Task implements Serializable{
+public class Task implements Serializable {
     protected String description;
     protected boolean isDone;
 

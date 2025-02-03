@@ -1,9 +1,11 @@
 package luna;
 
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.time.format.DateTimeParseException;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * This class is to test the functionality of the Deadline class.

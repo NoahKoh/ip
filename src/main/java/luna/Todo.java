@@ -3,7 +3,7 @@ package luna;
 /**
  * This class represents a todo task.
  */
-public class Todo extends Task{
+public class Todo extends Task {
 
     /**
      * Constructs a new Todo task with the given description.

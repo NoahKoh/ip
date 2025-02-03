@@ -46,7 +46,6 @@ public class Luna {
      */
     public void processInput() {
         while (true) {
-        //while (sc.hasNextLine()) {
             try {
                 String input = ui.getInput();
                 String[] inputParts = input.split(" ", 2);
