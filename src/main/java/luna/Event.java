@@ -7,7 +7,7 @@ import java.time.format.DateTimeParseException;
 /**
  * This class represents an event task with a specific start and end date.
  */
-public class Event extends Task{
+public class Event extends Task {
 
     protected LocalDate from;
     protected LocalDate to;

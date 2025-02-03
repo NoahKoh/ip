@@ -90,6 +90,11 @@ public class TaskList implements Serializable {
         task.printAddTaskMessage();
     }
 
+    /**
+     * Finds and prints tasks that contain the given description.
+     *
+     * @param description The keyword to search for the task.
+     */
     public void findTask(String description) {
         for (int i = 0; i < this.taskData.size(); i++) {
             Task task = this.taskData.get(i);
