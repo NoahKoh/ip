@@ -43,11 +43,12 @@ public class Task implements Serializable {
     }
 
     /**
-     * Prints a message to indicate that the task has been added.
+     * Returns a message indicating that the task has been added.
+     *
+     * @return A string message indicating that the task has been added.
      */
-    public void printAddTaskMessage() {
-        System.out.println("Got it. I've added this task:");
-        System.out.println(this.toString());
+    public String printAddTaskMessage() {
+        return "Got it. I've added this task:\n" + this.toString();
     }
 
     /**
