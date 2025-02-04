@@ -26,10 +26,12 @@ public class Ui {
     }
 
     /**
-     * Displays an exit message to the user.
+     * Returns an exit message to the user.
+     *
+     * @return A string message indicating that the user is exiting.
      */
-    public void exit() {
-        System.out.println("Bye. Hope to see you again soon!");
+    public String exit() {
+        return "Bye. Hope to see you again soon!";
     }
 
     /**

@@ -35,73 +35,81 @@ public class TaskList implements Serializable {
     }
 
     /**
-     * Prints the list of tasks.
+     * Returns the list of tasks as a string.
+     *
+     * @return A string representation of the list of tasks.
      */
-    public void listTask() {
+    public String listTask() {
+        String taskList = "";
         for (int i = 0; i < this.taskData.size(); i++) {
-            System.out.println((i + 1) + "." + this.taskData.get(i).toString());
+            taskList += (i + 1) + "." + this.taskData.get(i).toString() + "\n";
         }
+        return taskList;
     }
 
     /**
-     * Marks the task at the specified index as done.
+     * Marks the task at the specified index as done and returns a message indicating the task has been marked as done.
      *
      * @param index The index of the task to mark as done.
+     * @return A string message indicating the task has been marked as done.
      */
-    public void markDone(int index) {
+    public String markDone(int index) {
         Task task = this.taskData.get(index);
         task.markDone();
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(task.toString());
+        return "Nice! I've marked this task as done:\n" + task.toString();
     }
 
     /**
-     * Marks the task at the specified index as not done.
+     * Marks the task at the specified index as not done and returns a message indicating the task has been marked as not done.
      *
      * @param index The index of the task to mark as not done.
+     * @return A string message indicating the task has been marked as not done.
      */
-    public void markUndone(int index) {
+    public String markUndone(int index) {
         Task task = this.taskData.get(index);
         task.markUndone();
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(task.toString());
+        return "OK, I've marked this task as not done yet:\n" + task.toString();
     }
 
     /**
-     * Deletes the task at the specified index.
+     * Deletes the task at the specified index and returns a message indicating the task has been deleted.
      *
      * @param index The index of the task to delete.
+     * @return A string message indicating the task has been deleted.
      */
-    public void deleteTask(int index) {
+    public String deleteTask(int index) {
         Task task = this.taskData.get(index);
         this.taskData.remove(index);
-        System.out.println("Noted. I've removed this task:");
-        System.out.println("  " + task.toString());
-        System.out.println("Now you have " + this.taskData.size() + " tasks in the list.");
+        return "Noted. I've removed this task:\n  " + task.toString() + "\n" + "Now you have "
+                + this.taskData.size() + " tasks in the list.";
     }
 
     /**
-     * Adds a new task to the list.
+     * Adds a new task to the list and returns a message indicating the task has been added.
      *
      * @param task The task to add.
+     * @return A string message indicating the task has been added.
      */
-    public void addTask(Task task) {
+    public String addTask(Task task) {
         this.taskData.add(task);
-        task.printAddTaskMessage();
+        return task.printAddTaskMessage();
     }
 
     /**
-     * Finds and prints tasks that contain the given description.
+     * Finds and returns tasks that contain the given description.
      *
      * @param description The keyword to search for the task.
+     * @return A string representation of the tasks that match the description.
      */
-    public void findTask(String description) {
+    public String findTask(String description) {
+        String taskList = "";
         for (int i = 0; i < this.taskData.size(); i++) {
             Task task = this.taskData.get(i);
             if (task.description.contains(description)) {
-                System.out.println((i + 1) + ". " + task.toString());
+                taskList += (i + 1) + ". " + task.toString() + "\n";
             }
         }
+        return taskList;
     }
 
 }
