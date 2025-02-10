@@ -29,6 +29,11 @@ public class Luna {
             System.err.println("Error, can't load");
             taskList = new TaskList();
         }
+        assert filePath != null;
+        assert ui != null;
+        assert parser != null;
+        assert storage != null;
+        assert taskList != null;
     }
 
     /**
@@ -152,6 +157,7 @@ public class Luna {
             //System.err.println("Task number not in list");
         }
         storage.save(taskList.getTaskList());
+        assert response != null;
         return response;
     }
 
