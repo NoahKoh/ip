@@ -9,19 +9,19 @@ import java.time.format.DateTimeParseException;
  */
 public class Deadline extends Task {
 
-    protected LocalDate by;
+    protected LocalDate dueDate;
 
     /**
      * Constructs a new Deadline task with the given description and due date.
      *
      * @param description The description of the deadline task.
-     * @param by The due date of the deadline task in the format "yyyy-MM-dd".
+     * @param dueDate The due date of the deadline task in the format "yyyy-MM-dd".
      * @throws DateTimeParseException If the date format is invalid.
      */
-    public Deadline(String description, String by) throws DateTimeParseException {
+    public Deadline(String description, String dueDate) throws DateTimeParseException {
         super(description);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        this.by = LocalDate.parse(by, formatter);
+        this.dueDate = LocalDate.parse(dueDate, formatter);
     }
 
     /**
@@ -31,6 +31,6 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + this.by.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")";
+        return "[D]" + super.toString() + " (by: " + this.dueDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")";
     }
 }
