@@ -17,7 +17,8 @@ public class Parser {
         TODO,
         DEADLINE,
         EVENT,
-        FIND
+        FIND,
+        HELP
     }
 
     /**

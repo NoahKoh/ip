@@ -174,4 +174,19 @@ public class CommandHandler {
             return "Invalid date format. Use yyyy-MM-dd.";
         }
     }
+
+    public String handleHelpCommand() {
+        StringBuilder text = new StringBuilder("Available commands:\n");
+        text.append("• bye - Exit the chatbot\n");
+        text.append("• list - List all tasks\n");
+        text.append("• mark <number> - Mark a task as completed\n");
+        text.append("• unmark <number> - Unmark a task as completed\n");
+        text.append("• delete <number> - Delete a task\n");
+        text.append("• find <description> - Find tasks by description\n");
+        text.append("• todo <description> - Add a todo task\n");
+        text.append("• deadline <description> /by <date> - Add a deadline task\n");
+        text.append("• event <description> /from <start_date> /to <end_date> - Add an event task\n");
+        text.append("• help - Display the list of available commands\n");
+        return text.toString();
+    }
 }
