@@ -81,6 +81,9 @@ public class Luna {
             case EVENT:
                 response = commandHandler.handleEventCommand(inputParts);
                 break;
+            case HELP:
+                response = commandHandler.handleHelpCommand();
+                break;
             default:
                 return "Invalid Command";
             }
