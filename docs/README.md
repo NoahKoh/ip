@@ -91,4 +91,4 @@ Nice! I've marked this task as done:
 ```
 
 ### Image
-![Ui](https://noahkoh.github.io/ip/docs/Ui.png)
+![Ui](https://noahkoh.github.io/ip/Ui.png)
