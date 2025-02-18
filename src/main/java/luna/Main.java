@@ -28,6 +28,7 @@ public class Main extends Application {
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setLuna(luna); // inject the Duke instance
+            stage.setTitle("Luna");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
