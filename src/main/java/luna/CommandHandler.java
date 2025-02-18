@@ -97,7 +97,7 @@ public class CommandHandler {
         if (inputParts.length < 2) {
             return "The description to find cannot be empty.";
         }
-        String text = "Here are the matching tasks in your list:";
+        String text = "Here are the matching tasks in your list:\n";
         String description = inputParts[1];
         text += taskList.findTask(description);
         return text;
