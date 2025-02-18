@@ -28,18 +28,18 @@ Whether you need to remember important deadlines, events, or simple to-dos, Luna
 ```
 todo [description]
 ```
-- **deadline**: Adds a deadline task to the task list.
-<br>
-  `date` format must be in `yyyy-MM-dd`.
+- **deadline**: Adds a deadline task to the task list. <br>
+  <code>date</code> format must be in <code>yyyy-MM-dd</code>.
 ```
 deadline [description] /by [date]
 ```
-- **event**: Adds an event task to the task list.
-<br>
-  `date` format must be in `yyyy-MM-dd`.
+
+- **event**: Adds an event task to the task list. <br>
+  <code>date</code> format must be in <code>yyyy-MM-dd</code>.
 ```
 event [description] /from [start_date] /to [end_date]
 ```
+
 - **mark**: Marks a task as done.
 ```
 mark [number]
@@ -91,4 +91,4 @@ Nice! I've marked this task as done:
 ```
 
 ### Image
-![Ui](docs/Ui.png)
+![Ui](https://noahkoh.github.io/ip/docs/Ui.png)
